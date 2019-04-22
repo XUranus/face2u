@@ -1,3 +1,4 @@
+# -*- coding: UTF-8 -*-
 from flask import jsonify,Flask,request
 from flask_cors import *
 from flask import Flask,render_template

@@ -217,7 +217,11 @@ class CameraSection extends Component {
                     method:'post',
                     url:serverAddr+'/face_img',
                     crossDomain:true,
-                    data:splited
+                    data:{
+                        width:splited.width,
+                        height:splited.height,
+                        data:splited.data
+                    }
                 }).then(function (res) {
                     console.log(res.data)
                     _this.props.updateEcharts(res.data.data)
