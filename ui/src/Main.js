@@ -37,8 +37,6 @@ class Main extends Component {
     }
 
     render() {
-        const { classes } = this.props;
-        const echartsData = this.state.echartsData
         return (
             <div>
             {this.state.loaded?null:<div><LinearProgress /><br/></div>}

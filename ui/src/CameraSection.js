@@ -10,8 +10,12 @@ import * as faceapi from 'face-api.js'
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 
+/***********  Config This Addr  ****** */
 
-const serverAddr = 'http://localhost:5000'
+const serverAddr = 'http://www.hellogalaxy.cn:8080'
+
+/************************************* */
+
 
 const MEDIA_WIDTH = 640
 const MEDIA_HEIGHT = 480
@@ -207,17 +211,13 @@ class CameraSection extends Component {
                 let sourceHeight = detection.relativeBox.height*MEDIA_HEIGHT
                 context.drawImage(image,sourceX,sourceY,sourceWidth,sourceHeight,0,0,100,100)
                 let splited = context.getImageData(0,0,100,100)
-                console.log(splited)
+                console.log('post',splited)
 
                 axios({
                     method:'post',
                     url:serverAddr+'/face_img',
                     crossDomain:true,
-                    data:{
-                        matrix:splited,
-                        width:100,
-                        height:100
-                    }
+                    data:splited
                 }).then(function (res) {
                     console.log(res.data)
                     _this.props.updateEcharts(res.data.data)

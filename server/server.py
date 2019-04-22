@@ -20,11 +20,11 @@ def index():
 @app.route("/face_img", methods=["GET", "POST"])
 def receive_img():
     if request.method == "POST":
-        data = json.loads(request.get_data())
+        data = json.loads(request.get_data().decode('utf-8'))
         img_arr = list(data['matrix'].values())
         width = data['width']
         height = data['height']
-        img_arr = list(data['matrix']['data'].values())
+        img_arr = list(data['data'].values())
         gray_img_array = solv.one_dim_arr_to_img(img_arr,width,height)
         res = jsonify({"succ":True,"data":solv.predict(gray_img_array).tolist()})
         return res
