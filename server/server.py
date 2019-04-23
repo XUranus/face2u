@@ -22,7 +22,6 @@ def index():
 def receive_img():
     if request.method == "POST":
         data = json.loads(request.get_data().decode('utf-8'))
-        img_arr = list(data['matrix'].values())
         width = data['width']
         height = data['height']
         img_arr = list(data['data'].values())
@@ -35,3 +34,6 @@ def receive_img():
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0',port=5000,debug=True)
+    
+    #如果不是本机运行 需要SSL证书
+    #app.run(host='0.0.0.0',port=8080,debug=True,ssl_context=('*.crt','*.key'))
