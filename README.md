@@ -25,6 +25,12 @@ yarn build
 ```
 把build文件夹拷贝到web服务器目录中，（由于最新的chrome已经禁止了不安全的连接开启userMedia，必须要用https或者在localhost下，否则webcam无法使用，而firefox似乎还可以）
 
+如果用本地模式，只需要
+```
+sudo npm -g i serve
+serve -s build
+```
+
 之后配置`server/server.py`中的flask服务器地址和端口号，需要和上述前端配置一致。要保证已经安装了`keras`,`PIL`,`tensorflow`,`flask`
 ```
 cd server
