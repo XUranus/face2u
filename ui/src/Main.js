@@ -29,6 +29,7 @@ class Main extends Component {
     }
 
     updateEcharts(data) {
+        console.log('update echarts ,',data)
         this.setState({echartsData:data})
     }
 

@@ -26,7 +26,7 @@ const styles = theme=> ({
 class ChartsSection extends Component {
 
     render() {
-        var data = this.props.data[0]
+        var data = this.props.data
         const { classes } = this.props;
         console.log('new echart render',data)
         var barOption = {

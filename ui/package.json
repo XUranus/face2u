@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@material-ui/core": "^3.9.3",
+    "@tensorflow/tfjs": "^1.1.0",
     "axios": "^0.18.0",
     "echarts-for-react": "^2.0.15-beta.0",
     "face-api.js": "^0.19.0",

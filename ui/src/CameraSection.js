@@ -10,9 +10,11 @@ import * as faceapi from 'face-api.js'
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 
+import EmotionPredict from './EmotionPredict'
+import Switch from '@material-ui/core/Switch';
 /***********  Config This Addr  ****** */
 
-const serverAddr = 'http://www.hellogalaxy.cn:8080'
+const serverAddr = 'http://www.hellogalaxy.cn:5000'
 
 /************************************* */
 
@@ -73,10 +75,14 @@ function resizeCanvasAndResults(dimensions, canvas, results) {
 class CameraSection extends Component {
     state = {
         capturedImage:'face_default.jpeg',
-        forwardTimes:[]
+        forwardTimes:[],
+        localMode:true
     }
     //https://www.npmjs.com/package/react-webcam 
-    
+    handleModelChange = name => event => {
+        this.setState({ [name]: event.target.checked });
+    };
+
     setRef = webcam => {
         this.webcam = webcam;
     };
@@ -203,7 +209,7 @@ class CameraSection extends Component {
             let detection = detections[0]
             let image = new Image()
             image.src = imageSrc
-            image.onload = () =>{
+            image.onload = async () =>{
                 let context = document.getElementById('cutted').getContext('2d')
                 let sourceX = detection.relativeBox.x*MEDIA_WIDTH
                 let sourceY = detection.relativeBox.y*MEDIA_HEIGHT
@@ -211,23 +217,33 @@ class CameraSection extends Component {
                 let sourceHeight = detection.relativeBox.height*MEDIA_HEIGHT
                 context.drawImage(image,sourceX,sourceY,sourceWidth,sourceHeight,0,0,100,100)
                 let splited = context.getImageData(0,0,100,100)
-                console.log('post',splited)
-
-                axios({
-                    method:'post',
-                    url:serverAddr+'/face_img',
-                    crossDomain:true,
-                    data:{
-                        width:splited.width,
-                        height:splited.height,
-                        data:splited.data
-                    }
-                }).then(function (res) {
-                    console.log(res.data)
-                    _this.props.updateEcharts(res.data.data)
-                }).catch(function (error) {
-                    console.log(error);
-                });
+            
+                //是否用后端模型？
+                if(!this.state.localMode) {
+                    //console.log('post',splited)
+                    axios({
+                        method:'post',
+                        url:serverAddr+'/face_img',
+                        crossDomain:true,
+                        data:{
+                            width:splited.width,
+                            height:splited.height,
+                            data:splited.data
+                        }
+                    }).then(function (res) {
+                        console.log(res.data)
+                        _this.props.updateEcharts(res.data.data)
+                    }).catch(function (error) {
+                        console.log(error);
+                        alert('服务器无响应！')
+                    });
+                } else {
+                    let tempContext = document.createElement('canvas').getContext('2d');
+                    tempContext.drawImage(image,sourceX,sourceY,sourceWidth,sourceHeight,0,0,48,48)
+                    let newSpited = tempContext.getImageData(0,0,48,48)
+                    const data = await EmotionPredict.predict(newSpited)
+                    this.props.updateEcharts(data)
+                }
             }
         }
     };
@@ -235,6 +251,8 @@ class CameraSection extends Component {
 
     render() {
         const { classes } = this.props;
+        const {modelMode} = this.state;
+
         const videoConstraints = {
             width: 320,
             height: 240,
@@ -243,8 +261,8 @@ class CameraSection extends Component {
         
         return (
         <div className={classes.root}>
-            <Grid container spacing={24}>
-                <Grid item xs={6}>
+            <Grid container flexGrow>
+                <Grid item style={{width:'50%'}}>
                     <Paper className={classes.paper}>
                         <p>Web Camera</p>
                         <div>
@@ -263,6 +281,15 @@ class CameraSection extends Component {
                                 videoConstraints={videoConstraints}
                             />
                         </div>
+
+                        LocalMode 
+                        <Switch
+                            checked={this.state.localMode}
+                            onChange={this.handleModelChange('localMode')}
+                            value="localMode"
+                            color="primary"
+                        />
+
                         <Button 
                             variant="contained" 
                             color="primary" 
@@ -272,7 +299,7 @@ class CameraSection extends Component {
                         </Button>
                     </Paper>
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item style={{width:'50%'}}>
                     <Paper className={classes.paper}>
                         <p>SnapShot</p>
                         <canvas 

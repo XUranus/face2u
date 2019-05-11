@@ -31,6 +31,8 @@ class Solver:
     def predict(self,img_array):
         img_array= np.expand_dims(img_array, axis = 0)
         img_array /= 255
+        print(img_array)
+        print(img_array.shape)
         global graph
         with graph.as_default():
             res = self.model.predict(img_array)
