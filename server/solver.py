@@ -4,8 +4,6 @@ from keras.preprocessing import image
 import numpy as np
 from numpy import *
 from keras.models import load_model
-import tensorflow as tf
-graph = tf.get_default_graph()
 
 class Solver:
     # 模型加载
@@ -33,7 +31,5 @@ class Solver:
         img_array /= 255
         print(img_array)
         print(img_array.shape)
-        global graph
-        with graph.as_default():
-            res = self.model.predict(img_array)
+        res = self.model.predict(img_array)
         return res

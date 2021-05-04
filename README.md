@@ -2,43 +2,28 @@
 使用webcam识别人脸和情绪分类
 
 ### 模型训练
-使用keras训练，三层卷积一层全连接，训练过程见kaggle-emotion.html，数据来自kaggle比赛数据集`fer2013`
+使用keras训练，三层卷积 + 一层全连接 + Softmax，训练过程见`kaggle-emotion.ipynb`，数据来自kaggle比赛数据集[fer2013](https://www.kaggle.com/deadskull7/fer2013)
 
-### 前端
- - react
- - material-ui
- - face-api.js
-人脸动态检测使用了face-api.js的库，canvas截取100×100的人脸图片，转化成RGBA数据交由后台处理，返回分类数据
+ - 前端：React + face-api.js  
+ - 后端：Flask + Keras
 
-### 后端
- - keras
- - flask
+人脸Box位置检测使用了face-api.js的库，用canvas截取100×100的人脸图片，转化成RGBA数组，压缩灰化，交由分类器返回分类数据。
 
-后端完成表情分类的工作，拿到RGBA数组转化成RGB矩阵，压缩，灰化交给模型分类。
-
-### 关于构建与部署
-`ui`中是react项目，构建后可独立运行，需要先配置`/ui/src/CameraSection.js`中的flask服务器地址，之后就可构建。
+### 构建与部署
+默认使用`LocalMode`：前端内置了tensorflow.js，可以直接加载训练好的模型，脱离后端独立运行：
 ```
 cd ui
-yarn install
-yarn build
+yarn install && yarn start
 ```
-把build文件夹拷贝到web服务器目录中，（由于最新的chrome已经禁止了不安全的连接开启userMedia，必须要用https或者在localhost下，否则webcam无法使用，而firefox似乎还可以）
+浏览器访问`http://localhost:3000`即可直接体验。
 
-如果用本地模式，只需要
-```
-sudo npm -g i serve
-serve -s build
-```
+训练好的HDF5格式的模型文件位于`/server/emotion_model.h5`，其中前端`/ui/public/model`下的文件是由其用`tensorflowjs_converter`转化而来的。
 
-之后配置`server/server.py`中的flask服务器地址和端口号，需要和上述前端配置一致。要保证已经安装了`keras`,`PIL`,`tensorflow`,`flask`
-```
-cd server
-python server.py
-```
-此时打开浏览器，输入地址即可
+不使用`LocalMode`时，即需要额外配置`/ui/src/CameraSection.js`中的Flask服务器地址`serverAddr`，以及`server/server.py`中的Flask服务器地址和端口号，后端依赖安装：`cd server && pip3 install -r requirements.txt`，最后`python3 server.py`启动后端服务器。
+
+> 由于最新的chrome已经禁止了不安全的连接开启userMedia，必须要用https或者在localhost下访问，否则webcam无法使用
 
 ### 效果
 ![](demo.gif)
 
- - 2019.5.11 增加了tfjs本地模式，只需一个静态服务器即可部署
+

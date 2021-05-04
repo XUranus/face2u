@@ -14,7 +14,7 @@ import EmotionPredict from './EmotionPredict'
 import Switch from '@material-ui/core/Switch';
 /***********  Config This Addr  ****** */
 
-const serverAddr = 'http://www.hellogalaxy.cn:5000'
+const serverAddr = 'http://localhost:5000'
 
 /************************************* */
 
