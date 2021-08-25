@@ -147,7 +147,7 @@ team==1.0
 tensorboard==2.5.0
 tensorboard-data-server==0.6.0
 tensorboard-plugin-wit==1.8.0
-tensorflow-cpu==2.5.0rc2
+tensorflow-cpu==2.5.1
 tensorflow-estimator==2.5.0rc0
 tensorflow-gpu @ file:///build/tensorflow/src/tmpcuda/tensorflow_gpu-2.4.1-cp39-cp39-linux_x86_64.whl
 tensorflow-hub==0.7.0
