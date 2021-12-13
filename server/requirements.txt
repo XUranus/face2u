@@ -71,7 +71,7 @@ libfdt==1.6.0
 libmsym==0.2.4
 lockfile==0.12.2
 louis==3.17.0
-lxml==4.6.3
+lxml==4.6.5
 Markdown==3.3.4
 MarkupSafe==1.1.1
 matplotlib-inline==0.1.2
