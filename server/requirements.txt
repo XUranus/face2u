@@ -75,7 +75,7 @@ lxml==4.6.3
 Markdown==3.3.4
 MarkupSafe==1.1.1
 matplotlib-inline==0.1.2
-mistune==0.8.4
+mistune==2.0.3
 more-itertools==8.7.0
 msgpack==1.0.2
 nbclient==0.5.3
