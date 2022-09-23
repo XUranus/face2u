@@ -101,7 +101,7 @@ prettytable==2.0.0
 progress==1.5
 prometheus-client==0.10.1
 prompt-toolkit==1.0.14
-protobuf==3.15.8
+protobuf==3.18.3
 ptyprocess==0.7.0
 pulsemixer==1.5.1
 pwquality==1.4.4
